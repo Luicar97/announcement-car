@@ -1,14 +1,19 @@
-import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback, useState } from 'react';
 import { Image } from 'expo-image';
-import { useAssets } from 'expo-asset';
+import ColorAppComponent from './src/components/color_app_component';
+import ImageAppComponent from './src/components/image_app_component';
+import TitleAppComponent from './src/components/title_app_component';
+import LoaderAppComponent from './src/components/loader_app_component';
 
-export const firstName = require('./assets/first-img.png'); 
 export const loader = require('./assets/loader.png'); 
 
 export default function App() {
+
+
+  let [intImg, stateImg] = useState(0);
 
   const [fontsLoaded] =  useFonts({
     'SFProdisplay-Bold': require('./assets/fonts/SFProDisplay-Bold.ttf'),
@@ -24,62 +29,47 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
-  
+
+
+  function changeImage(index){
+    index++
+
+    if (index > 3) {
+      index = 0
+    }
+
+    stateImg(index);
+  }
+
   return (
-    <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-      <View style={styles.firstContainer}>
-        <Text style={styles.title}>Your first car without a driver's license</Text>
-        <Text style={styles.subtitle}>Goes to meet people who just got their license</Text>
-      </View>
+    <ColorAppComponent index={intImg}>
+      <TitleAppComponent index={intImg} />
       <View>
-        <Image style={styles.image} source={firstName} />
+        <ImageAppComponent index={intImg} />
       </View>
       <View style={styles.containerFooter}>
         <View style={styles.containerDots}>
             <View style={styles.dots}>
-              <View style={styles.active} />
-              <View style={styles.disable} />
-              <View style={styles.disable} />
-              <View style={styles.disable} />
+              <View style={ (intImg == 0) ? styles.active : styles.disable} />
+              <View style={(intImg == 1) ? styles.active : styles.disable} />
+              <View style={(intImg == 2) ? styles.active : styles.disable} />
+              <View style={(intImg == 3) ? styles.active : styles.disable} />
             </View>
             <View>
               <Text style={styles.subtitle}>Skip</Text>
             </View>
         </View>
         <View style={styles.containerLoader}>
-        <Image style={styles.imageloader} source={loader} />
+          <TouchableOpacity onPress={() => changeImage(intImg)}>
+            <LoaderAppComponent index={intImg}/>
+          </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+    </ColorAppComponent>
   );
-}
+  }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F0CF69',
-  },
-  firstContainer:{
-    paddingLeft: 22,
-    paddingRight: 22,
-    paddingTop: 32,
-    paddingBottom: 60
-  },
-  title: {
-    color: 'white',
-    fontFamily: 'SFProdisplay-Bold',
-    fontSize: 30
-  },
-  subtitle: {
-    paddingTop: 12,
-    color: 'white',
-    fontFamily: 'SFProText-Light',
-    fontSize:23
-  },
-  image: {
-    width: Dimensions.get ('window').width, 
-    height: Dimensions.get ('window').height / 2,
-  },
   active:{
     width: 25,
     height:10,
@@ -103,10 +93,6 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     flexDirection: 'column',
   },
-  imageloader:{
-    width: 50, 
-    height: 50,
-  },
   containerLoader:{
     paddingTop: 18,
     paddingRight: 25,
@@ -115,5 +101,11 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  subtitle: {
+    paddingTop: 12,
+    color: 'white',
+    fontFamily: 'SFProText-Light',
+    fontSize:23
   }
 });
