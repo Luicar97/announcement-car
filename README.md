@@ -1,2 +1,5 @@
 # announcement-car!
-[Simulator Screen Shot - iPhone 14 - 2023-03-23 at 02 21 14](https://user-images.githubusercontent.com/36460315/227286152-38010f6a-422d-4cc5-866e-86bf62d9b5c9.png)
+
+Proyecto realizado en react native, se utilizo expo y componentes.
+
+https://user-images.githubusercontent.com/36460315/229047642-d94f0c10-e8a2-41b5-93fc-89046875551e.mp4
